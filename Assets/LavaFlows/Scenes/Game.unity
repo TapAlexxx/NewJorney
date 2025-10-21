@@ -1518,7 +1518,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 1.61, z: 0}
-  Damping: {x: 0.5, y: 0.5}
+  Damping: {x: 0, y: 0.5}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -1547,8 +1547,8 @@ MonoBehaviour:
   Radius: 10
   Orbits:
     Top:
-      Radius: 2
-      Height: 3.5
+      Radius: 2.5
+      Height: 4
     Center:
       Radius: 3
       Height: 2
