@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: f620f1238efed4c42bb30c5cd44decea
+labels:
+- Bosoniq
+- Editor
+- Open
+- Recent
+- Scene
+- Script
+- Tools
+- Extension
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 17592
+  packageName: Open Recent Scene
+  packageVersion: 1.7.0
+  assetPath: Assets/BosoniqTools/OpenRecentScene/Editor/BosoniqToolsOpenRecentScene.cs
+  uploadId: 193644
