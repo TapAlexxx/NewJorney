@@ -3,7 +3,8 @@ using UnityEngine;
 public class CharacterMover : MonoBehaviour
 {
     [SerializeField] private Transform character;
-    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] private Animator animator;
 
     private Vector2 moveDirection;
     
@@ -13,6 +14,9 @@ public class CharacterMover : MonoBehaviour
         moveDirection.y = Input.GetAxis("Horizontal");
         
         Move();
+        
+        animator.SetFloat("moveDirectionX", moveDirection.x);
+        animator.SetFloat("moveDirectionY", moveDirection.y);
     }
 
     private void Move()
