@@ -16,7 +16,12 @@ public class CharacterMover : MonoBehaviour
     private float speedX;
     private float speedY;
     private float forwardMaxSpeed => forwardSpeed + sprintSpeed;
-    
+
+    private void Start()
+    {
+        Application.targetFrameRate = 240;
+    }
+
     private void Update()
     {
         moveDirection.x = Input.GetAxisRaw("Vertical");
@@ -27,6 +32,8 @@ public class CharacterMover : MonoBehaviour
         
         speedX = moveDirection.x * speedXMul;
         speedY = moveDirection.y * sideSpeed;
+        
+        
     }
 
     private void LateUpdate()
@@ -50,8 +57,8 @@ public class CharacterMover : MonoBehaviour
 
     private void UpdateAnimation(float speedX, float speedY)
     {
-        animator.SetFloat("moveDirectionX", speedX / (moveDirection.x >= 0 ? forwardMaxSpeed : backwardSpeed));
-        animator.SetFloat("moveDirectionY", speedY / sideSpeed);
+        animator.SetFloat("moveDirectionX", speedX / (moveDirection.x >= 0 ? forwardMaxSpeed : backwardSpeed), 0.1f, Time.deltaTime);
+        animator.SetFloat("moveDirectionY", speedY / sideSpeed, 0.1f, Time.deltaTime);
     }
 
     private float GetSpeedXMultiplier(float moveDirectionX, bool sprintActive)
