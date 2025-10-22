@@ -1131,6 +1131,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8572713533389772225, guid: 358fa9ebe90d9714eb2bab091fc080db, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1660871905}
+    - targetCorrespondingSourceObject: {fileID: 8572713533389772225, guid: 358fa9ebe90d9714eb2bab091fc080db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1660871907}
+    - targetCorrespondingSourceObject: {fileID: 8572713533389772225, guid: 358fa9ebe90d9714eb2bab091fc080db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1660871908}
   m_SourcePrefab: {fileID: 100100000, guid: 358fa9ebe90d9714eb2bab091fc080db, type: 3}
 --- !u!1 &1660871903 stripped
 GameObject:
@@ -1154,7 +1160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5661dbc676254519adc340d9bea62e7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterMover
-  character: {fileID: 1660871904}
+  characterTransform: {fileID: 1660871904}
+  characterRigidbody: {fileID: 1660871908}
   forwardSpeed: 4
   backwardSpeed: 4
   sideSpeed: 4
@@ -1166,6 +1173,56 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 3122008230439163137, guid: 358fa9ebe90d9714eb2bab091fc080db, type: 3}
   m_PrefabInstance: {fileID: 1660871902}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &1660871907
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660871903}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.26
+  m_Height: 1.78
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.86, z: 0}
+--- !u!54 &1660871908
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660871903}
+  serializedVersion: 5
+  m_Mass: 10
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1001 &1676068302
 PrefabInstance:
   m_ObjectHideFlags: 0

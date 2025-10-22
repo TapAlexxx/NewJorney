@@ -1,15 +1,26 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CharacterMover : MonoBehaviour
 {
-    [SerializeField] private Transform character;
+    private const float MoveAnimationDampTime = 0.1f;
+
+    
+    [Header("Character")]
+    [SerializeField] private Transform characterTransform;
+    [SerializeField] private Rigidbody characterRigidbody;
+    
+    [Header("MoveSpeed")]
     [SerializeField] private float forwardSpeed = 4f;
     [SerializeField] private float backwardSpeed = 2f;
     [SerializeField] private float sideSpeed = 5f;
     [SerializeField] private float sprintSpeed = 3f;
+    
+    [Header("Animation")]
     [SerializeField] private Animator animator;
     
+    [Header("Rotation")]
     [SerializeField] private Transform cameraTransform;
 
     private Vector2 moveDirection;
@@ -32,33 +43,35 @@ public class CharacterMover : MonoBehaviour
         
         speedX = moveDirection.x * speedXMul;
         speedY = moveDirection.y * sideSpeed;
-        
-        
+    }
+
+    private void FixedUpdate()
+    {
+        Move(speedX, speedY);
     }
 
     private void LateUpdate()
     {
-        Move(speedX, speedY);
         UpdateAnimation(speedX, speedY);
         
-        character.transform.eulerAngles = new Vector3(character.transform.eulerAngles.x, cameraTransform.eulerAngles.y, character.transform.eulerAngles.z);
+        characterTransform.transform.eulerAngles = new Vector3(characterTransform.transform.eulerAngles.x, cameraTransform.eulerAngles.y, characterTransform.transform.eulerAngles.z);
     }
 
     private void Move(float speedX, float speedY)
     {
-        var moveXDelta = speedX * Time.deltaTime;
-        var moveYDelta = speedY * Time.deltaTime;
-        var forwardNormalized = character.transform.forward.normalized;
-        var rightNormalized = character.transform.right.normalized;
+        var moveXDelta = speedX * Time.fixedDeltaTime;
+        var moveYDelta = speedY * Time.fixedDeltaTime;
+        var forwardNormalized = characterTransform.transform.forward.normalized;
+        var rightNormalized = characterTransform.transform.right.normalized;
         
-        var resultMovement = (rightNormalized * moveYDelta) + (forwardNormalized * moveXDelta);
-        character.transform.position += resultMovement;
+        var resultMovement = characterRigidbody.position + (rightNormalized * moveYDelta) + (forwardNormalized * moveXDelta);
+        characterRigidbody.MovePosition(resultMovement);
     }
 
     private void UpdateAnimation(float speedX, float speedY)
     {
-        animator.SetFloat("moveDirectionX", speedX / (moveDirection.x >= 0 ? forwardMaxSpeed : backwardSpeed), 0.1f, Time.deltaTime);
-        animator.SetFloat("moveDirectionY", speedY / sideSpeed, 0.1f, Time.deltaTime);
+        animator.SetFloat("moveDirectionX", speedX / (moveDirection.x >= 0 ? forwardMaxSpeed : backwardSpeed), MoveAnimationDampTime, Time.deltaTime);
+        animator.SetFloat("moveDirectionY", speedY / sideSpeed, MoveAnimationDampTime, Time.deltaTime);
     }
 
     private float GetSpeedXMultiplier(float moveDirectionX, bool sprintActive)
