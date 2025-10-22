@@ -1156,8 +1156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterMover
   character: {fileID: 1660871904}
   forwardSpeed: 4
-  backwardSpeed: 3
-  sideSpeed: 5
+  backwardSpeed: 4
+  sideSpeed: 4
   sprintSpeed: 3
   animator: {fileID: 1660871906}
   cameraTransform: {fileID: 243295562}
