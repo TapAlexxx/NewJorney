@@ -467,8 +467,8 @@ MonoBehaviour:
   IgnoreTimeScale: 0
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
-  UpdateMethod: 2
-  BlendUpdateMethod: 1
+  UpdateMethod: 0
+  BlendUpdateMethod: 0
   LensModeOverride:
     Enabled: 0
     DefaultMode: 2
@@ -597,6 +597,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground_01
       objectReference: {fileID: 0}
+    - target: {fileID: 4729723302331074421, guid: 98f5378049f9b5745a77677f581b32b1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 766fd3ff04aab4745a764d33daac86fa, type: 2}
     - target: {fileID: 6603488554207994483, guid: 98f5378049f9b5745a77677f581b32b1, type: 3}
       propertyPath: m_LocalScale.x
       value: 20
@@ -1162,10 +1166,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterMover
   characterTransform: {fileID: 1660871904}
   characterRigidbody: {fileID: 1660871908}
-  forwardSpeed: 4
+  groundCheckDistance: 0.1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  forwardSpeed: 5
   backwardSpeed: 4
   sideSpeed: 4
   sprintSpeed: 3
+  jumpForce: 10
   animator: {fileID: 1660871906}
   cameraTransform: {fileID: 243295562}
 --- !u!95 &1660871906 stripped
@@ -1192,7 +1201,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.26
+  m_Radius: 0.6
   m_Height: 1.78
   m_Direction: 1
   m_Center: {x: 0, y: 0.86, z: 0}
@@ -1220,9 +1229,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1001 &1676068302
 PrefabInstance:
   m_ObjectHideFlags: 0

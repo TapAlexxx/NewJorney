@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CharacterMover : MonoBehaviour
 {
@@ -10,12 +8,15 @@ public class CharacterMover : MonoBehaviour
     [Header("Character")]
     [SerializeField] private Transform characterTransform;
     [SerializeField] private Rigidbody characterRigidbody;
+    [SerializeField] private float groundCheckDistance = 0.2f;
+    [SerializeField] private LayerMask groundMask;
     
     [Header("MoveSpeed")]
     [SerializeField] private float forwardSpeed = 4f;
     [SerializeField] private float backwardSpeed = 2f;
     [SerializeField] private float sideSpeed = 5f;
     [SerializeField] private float sprintSpeed = 3f;
+    [SerializeField] private float jumpForce = 5f;
     
     [Header("Animation")]
     [SerializeField] private Animator animator;
@@ -24,10 +25,13 @@ public class CharacterMover : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
 
     private Vector2 moveDirection;
-    private float speedX;
-    private float speedY;
-    private float forwardMaxSpeed => forwardSpeed + sprintSpeed;
+    private bool sprintActive;
+    private float verticalVelocity;
 
+    private float forwardMaxSpeed => forwardSpeed + sprintSpeed;
+    private bool isGrounded => Physics.Raycast(characterTransform.position, Vector3.down, groundCheckDistance, groundMask);
+    
+    
     private void Start()
     {
         Application.targetFrameRate = 240;
@@ -35,24 +39,29 @@ public class CharacterMover : MonoBehaviour
 
     private void Update()
     {
+
         moveDirection.x = Input.GetAxisRaw("Vertical");
         moveDirection.y = Input.GetAxisRaw("Horizontal");
-        var sprintActive = Input.GetKey(KeyCode.LeftShift);
 
-        var speedXMul = GetSpeedXMultiplier(moveDirection.x, sprintActive);
-        
-        speedX = moveDirection.x * speedXMul;
-        speedY = moveDirection.y * sideSpeed;
+        sprintActive = Input.GetKey(KeyCode.LeftShift) && isGrounded;
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            verticalVelocity = jumpForce;
+        }
     }
 
     private void FixedUpdate()
     {
-        Move(speedX, speedY);
+        var speed = CalculateSpeed();
+
+        Move(speed.x, speed.y);
     }
 
     private void LateUpdate()
     {
-        UpdateAnimation(speedX, speedY);
+        var speed = CalculateSpeed();
+        UpdateAnimation(speed.x, speed.y);
         
         characterTransform.transform.eulerAngles = new Vector3(characterTransform.transform.eulerAngles.x, cameraTransform.eulerAngles.y, characterTransform.transform.eulerAngles.z);
     }
@@ -65,6 +74,15 @@ public class CharacterMover : MonoBehaviour
         var rightNormalized = characterTransform.transform.right.normalized;
         
         var resultMovement = characterRigidbody.position + (rightNormalized * moveYDelta) + (forwardNormalized * moveXDelta);
+
+
+        if (isGrounded && verticalVelocity < 0)
+            verticalVelocity = 0;
+        else
+            verticalVelocity += Physics.gravity.y * Time.fixedDeltaTime;
+        
+        resultMovement.y += verticalVelocity * Time.fixedDeltaTime;
+
         characterRigidbody.MovePosition(resultMovement);
     }
 
@@ -84,5 +102,12 @@ public class CharacterMover : MonoBehaviour
         }
         
         return backwardSpeed;
+    }
+
+    private Vector2 CalculateSpeed()
+    {
+        var speedXMul = GetSpeedXMultiplier(moveDirection.x, sprintActive);
+        
+        return new Vector2(moveDirection.x * speedXMul, moveDirection.y * sideSpeed);
     }
 }
