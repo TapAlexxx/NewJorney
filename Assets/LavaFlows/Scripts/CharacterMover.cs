@@ -32,8 +32,8 @@ public class CharacterMover : MonoBehaviour
     private float forwardMaxSpeed => forwardSpeed + sprintSpeed;
     private bool isGrounded => 
         Physics.SphereCast(
-            characterTransform.position + Vector3.up * capsuleCollider.radius*1.5f,
-            capsuleCollider.radius*1.5f,
+            characterTransform.position + Vector3.up * capsuleCollider.radius*2f,
+            capsuleCollider.radius * 0.8f,
             Vector3.down, 
             out _,
             groundCheckDistance,
