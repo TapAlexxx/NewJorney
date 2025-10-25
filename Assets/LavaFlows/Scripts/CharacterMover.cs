@@ -8,6 +8,7 @@ public class CharacterMover : MonoBehaviour
     [Header("Character")]
     [SerializeField] private Transform characterTransform;
     [SerializeField] private Rigidbody characterRigidbody;
+    [SerializeField] private CapsuleCollider capsuleCollider;
     [SerializeField] private float groundCheckDistance = 0.2f;
     [SerializeField] private LayerMask groundMask;
     
@@ -26,44 +27,48 @@ public class CharacterMover : MonoBehaviour
 
     private Vector2 moveDirection;
     private bool sprintActive;
-    private float verticalVelocity;
+    private Vector2 speed;
 
     private float forwardMaxSpeed => forwardSpeed + sprintSpeed;
-    private bool isGrounded => Physics.Raycast(characterTransform.position, Vector3.down, groundCheckDistance, groundMask);
-    
-    
-    private void Start()
-    {
-        Application.targetFrameRate = 240;
-    }
+    private bool isGrounded => 
+        Physics.SphereCast(
+            characterTransform.position + Vector3.up * capsuleCollider.radius*1.5f,
+            capsuleCollider.radius*1.5f,
+            Vector3.down, 
+            out _,
+            groundCheckDistance,
+            groundMask
+        );
 
     private void Update()
     {
-
         moveDirection.x = Input.GetAxisRaw("Vertical");
         moveDirection.y = Input.GetAxisRaw("Horizontal");
 
         sprintActive = Input.GetKey(KeyCode.LeftShift) && isGrounded;
+        
+        characterRigidbody.linearDamping = isGrounded ? 5f : 0f;
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            verticalVelocity = jumpForce;
+            characterRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+
+        speed = CalculateSpeed();
     }
 
     private void FixedUpdate()
     {
-        var speed = CalculateSpeed();
 
         Move(speed.x, speed.y);
+
+        
+        characterRigidbody.MoveRotation(Quaternion.Euler(0f, cameraTransform.eulerAngles.y, 0f));
     }
 
     private void LateUpdate()
     {
-        var speed = CalculateSpeed();
-        UpdateAnimation(speed.x, speed.y);
-        
-        characterTransform.transform.eulerAngles = new Vector3(characterTransform.transform.eulerAngles.x, cameraTransform.eulerAngles.y, characterTransform.transform.eulerAngles.z);
+        UpdateAnimation(speed.x, speed.y); 
     }
 
     private void Move(float speedX, float speedY)
@@ -73,17 +78,11 @@ public class CharacterMover : MonoBehaviour
         var forwardNormalized = characterTransform.transform.forward.normalized;
         var rightNormalized = characterTransform.transform.right.normalized;
         
-        var resultMovement = characterRigidbody.position + (rightNormalized * moveYDelta) + (forwardNormalized * moveXDelta);
-
-
-        if (isGrounded && verticalVelocity < 0)
-            verticalVelocity = 0;
-        else
-            verticalVelocity += Physics.gravity.y * Time.fixedDeltaTime;
+        var resultMovement = (rightNormalized * moveYDelta) + (forwardNormalized * moveXDelta);
+        resultMovement.y = 0;
         
-        resultMovement.y += verticalVelocity * Time.fixedDeltaTime;
-
-        characterRigidbody.MovePosition(resultMovement);
+        characterRigidbody.AddForce(resultMovement, ForceMode.VelocityChange);
+        //characterRigidbody.MovePosition(resultMovement);
     }
 
     private void UpdateAnimation(float speedX, float speedY)

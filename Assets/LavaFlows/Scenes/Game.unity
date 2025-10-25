@@ -467,8 +467,8 @@ MonoBehaviour:
   IgnoreTimeScale: 0
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
-  UpdateMethod: 0
-  BlendUpdateMethod: 0
+  UpdateMethod: 2
+  BlendUpdateMethod: 1
   LensModeOverride:
     Enabled: 0
     DefaultMode: 2
@@ -1166,15 +1166,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterMover
   characterTransform: {fileID: 1660871904}
   characterRigidbody: {fileID: 1660871908}
-  groundCheckDistance: 0.1
+  capsuleCollider: {fileID: 1660871907}
+  groundCheckDistance: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  forwardSpeed: 5
-  backwardSpeed: 4
-  sideSpeed: 4
-  sprintSpeed: 3
-  jumpForce: 10
+  forwardSpeed: 300
+  backwardSpeed: 200
+  sideSpeed: 200
+  sprintSpeed: 100
+  jumpForce: 100
   animator: {fileID: 1660871906}
   cameraTransform: {fileID: 243295562}
 --- !u!95 &1660871906 stripped
@@ -1231,7 +1232,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 80
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!1001 &1676068302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1584,7 +1585,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 1.61, z: 0}
-  Damping: {x: 0, y: 0.5}
+  Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
     Time: 0
